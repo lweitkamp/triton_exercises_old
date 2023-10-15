@@ -48,7 +48,11 @@ def softmax_kernel(
         order=(1, 0),
     )
 
-    input_block = tl.load(input_block_ptr)
+    input_block = tl.load(
+        input_block_ptr,
+        boundary_check=(0, 1),
+        padding_option="zero",
+    )
 
     # Calculate softmax, don't forget the max trick.
     numerator = tl.exp(input_block - tl.max(input_block))
